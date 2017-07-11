@@ -83,11 +83,15 @@ router.get("/:id/edit",middleware.checkCampgroundOwnership,function(req,res){
 
 //UPDATE route
 router.put("/:id", function(req, res){
-  geocoder.geocode(req.body.location, function (err, data) {
+  geocoder.geocode(req.body.campground.location, function (err, data) {
     var lat = data.results[0].geometry.location.lat;
     var lng = data.results[0].geometry.location.lng;
     var location = data.results[0].formatted_address;
-    var newData = {name: req.body.name, image: req.body.image, description: req.body.description, cost: req.body.cost, location: location, lat: lat, lng: lng};
+    // var newData = {name: req.body.name, image: req.body.image, description: req.body.description, cost: req.body.cost, location: location, lat: lat, lng: lng};
+    var newData = req.body.campground;
+    newData.lat = lat;
+    newData.long = lng;
+    newData.location = location;
     Campground.findByIdAndUpdate(req.params.id, {$set: newData}, function(err, campground){
         if(err){
             req.flash("error", err.message);
