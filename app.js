@@ -17,6 +17,7 @@ var commentRoutes = require("./routes/comments"),
     indexRoutes       = require("./routes/index");
     
 mongoose.Promise = global.Promise;
+//export DATABASEURL="mongodb://localhost/LandXscape_v1"
 mongoose.connect(process.env.DATABASEURL);
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
@@ -48,6 +49,17 @@ app.use(function(req, res, next){
 app.use(indexRoutes);
 app.use("/campgrounds", campgroundRoutes);
 app.use("/campgrounds/:id/comments",commentRoutes);
+
+app.get("/allCampgrounds",function(req,res){
+    console.log(req.query.location);
+    Campground.find({location: {$regex: req.query.location}},function(err,foundCampgrounds){
+        if (err){
+            console.log(err);
+        }
+        console.log(foundCampgrounds);
+        res.json(foundCampgrounds);
+    })
+});
 
 
 app.listen(process.env.PORT,process.env.IP,function(){
