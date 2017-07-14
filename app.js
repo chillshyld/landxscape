@@ -17,6 +17,7 @@ var commentRoutes = require("./routes/comments"),
     indexRoutes       = require("./routes/index");
     
 mongoose.Promise = global.Promise;
+console.log("Database URL: " + process.env.DATABASEURL);
 //export DATABASEURL="mongodb://localhost/LandXscape_v1"
 mongoose.connect(process.env.DATABASEURL);
 app.use(bodyParser.urlencoded({extended: true}));

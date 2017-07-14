@@ -20,7 +20,8 @@ router.get("/register",function(req,res){
 
 //handle sign up logic
 router.post("/register",function(req,res){
-    var newUser = new User({username: req.body.username});
+    var newUser = req.body.user;
+    newUser.username = req.body.username;
     User.register(newUser,req.body.password,function(err,user){
         if (err){
             console.log(err);
@@ -28,10 +29,10 @@ router.post("/register",function(req,res){
             return res.render("register");
         }
         passport.authenticate("local")(req,res,function(){
-            req.flash("success","Welcome to YelpCamp " + user.username);
+            req.flash("success","Welcome to LandXScape " + user.name);
             res.redirect("/campgrounds");
         });
-    }); 
+    });
 });
 
 //show login form
